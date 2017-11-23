@@ -10,6 +10,7 @@ import android.view.View
 import es.smartech.foodr.CONSTANT_URL_DESCARGA
 import es.smartech.foodr.R
 import es.smartech.foodr.models.Allergen
+import es.smartech.foodr.models.Category
 import es.smartech.foodr.models.Dish
 import es.smartech.foodr.models.Restaurant
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         dishesImage.setOnClickListener {
-
+            startActivity(DishesActivity.intent(this, restaurantData))
         }
     }
 
@@ -107,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                 val dishDescription = dish.getString("description")
                 val dishprice = dish.getDouble("price").toFloat()
                 val dishImageString = dish.getString("image")
+                val dishCategory = Category.valueOf(dish.getString("category"))
 
                 // Generamos lista de alergenos
                 val downloadedAllergens = dish.getJSONArray("allergens")
@@ -135,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                     else -> R.drawable.image_not_available
                 }
 
-                dishesList.add(Dish(dishName, dishDescription, dishprice, dishImage, dishAllergens))
+                dishesList.add(Dish(dishName, dishDescription, dishprice, dishImage, dishAllergens, dishCategory))
             }
 
             return Restaurant(downloadedName, downloadedTables, dishesList)
