@@ -6,14 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ViewSwitcher
 import es.smartech.foodr.CONSTANT_URL_DESCARGA
 import es.smartech.foodr.R
 import es.smartech.foodr.models.Allergen
 import es.smartech.foodr.models.Dish
+import es.smartech.foodr.models.Restaurant
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
@@ -30,34 +28,43 @@ class MainActivity : AppCompatActivity() {
         HOME_MENU(1)
     }
 
-    var dishes: List<Dish>? = null
-        set(value) {
-            field = value
-            if (value != null) {
-
-            } else {
-                updateDishes()
-            }
-        }
+    lateinit var restaurantData : Restaurant
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        updateDishes()
+
+        // Configuro la Toolbar
+        setSupportActionBar(mainToolbar)
+
+        updateData()
+
+        tablesImage.setOnClickListener {
+            startActivity(TablesActivity.intent(this, restaurantData))
+        }
+
+        dishesImage.setOnClickListener {
+
+        }
     }
 
-    private fun updateDishes() {
+
+    private fun updateData() {
         view_switcher.displayedChild = VIEW_INDEX.DOWNLOADING.index
         async(UI) {
-            val newDishes: Deferred<List<Dish>?> = bg {
-                downloadDishes()
+            val data : Deferred<Restaurant?> = bg {
+                downloadData()
             }
 
-            val downloadedDishes = newDishes.await()
+            val downloadedData = data.await()
 
-            if (downloadedDishes != null) {
+            if (downloadedData != null) {
                 // La descarga se ha realizado correctamente
-                dishes = downloadedDishes
+                view_switcher.displayedChild = VIEW_INDEX.HOME_MENU.index
+                restaurantData = downloadedData
+
+                // Actualizo el título de la Toolbar
+                supportActionBar?.title = "Foodr (${restaurantData.name})"
             }
             else {
                 // La descarga ha acabado con error
@@ -66,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         .setMessage("Error al descargar datos desde el servidor. Por favor verifica la conexión de tu teminal")
                         .setPositiveButton("Reintentar", { dialog, _ ->
                             dialog.dismiss()
-                            updateDishes()
+                            updateData()
                         })
                         .setNegativeButton("Salir", { _, _ -> finish() })
                         .show()
@@ -74,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun downloadDishes(): List<Dish>? {
+    fun downloadData(): Restaurant? {
         try {
             // Retardo simulado
             Thread.sleep(3000)
@@ -83,9 +90,11 @@ class MainActivity : AppCompatActivity() {
             val url = URL(CONSTANT_URL_DESCARGA)
             val jsonString = Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next()
 
-            // Recuperamos la lista de platos del JSON recibido
+            // Recuperamos nombre, cantidad de mesas y lista de platos del JSON recibido
             val jsonRoot = JSONObject(jsonString)
             val downloadedDishesList = jsonRoot.getJSONArray("dishes")
+            val downloadedName = jsonRoot.getString("name")
+            val downloadedTables = jsonRoot.getDouble("tables").toInt()
 
             // Creamos una lista de platos
             val dishesList = mutableListOf<Dish>()
@@ -129,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                 dishesList.add(Dish(dishName, dishDescription, dishprice, dishImage, dishAllergens))
             }
 
-            return dishesList
+            return Restaurant(downloadedName, downloadedTables, dishesList)
 
         } catch (ex: Exception) {
             ex.printStackTrace()

@@ -1,6 +1,8 @@
 package es.smartech.foodr.models
 
-enum class Allergen {
+import java.io.Serializable
+
+enum class Allergen : Serializable {
     EGG,
     NUTS,
     GLUTEN,
