@@ -4,11 +4,15 @@ import android.app.AlertDialog
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.internal.NavigationMenu
+import android.support.v4.app.Fragment
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import es.smartech.foodr.CONSTANT_URL_DESCARGA
 import es.smartech.foodr.R
+import es.smartech.foodr.fragments.DishesFragment
+import es.smartech.foodr.fragments.TablesFragment
 import es.smartech.foodr.models.Allergen
 import es.smartech.foodr.models.Category
 import es.smartech.foodr.models.Dish
@@ -29,7 +33,10 @@ class MainActivity : AppCompatActivity() {
         HOME_MENU(1)
     }
 
-    lateinit var restaurantData : Restaurant
+    val NAVIGATION_MENU_DEFAULT_OPTION = R.id.action_tables
+    val DEFAULT_FRAGMENT = getFragmentToShow(NAVIGATION_MENU_DEFAULT_OPTION)
+
+    var restaurantData : Restaurant? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +45,52 @@ class MainActivity : AppCompatActivity() {
         // Configuro la Toolbar
         setSupportActionBar(mainToolbar)
 
-        updateData()
+        // Si no tengo datos los actualizo desde Internet
+        if (restaurantData == null) {
 
-        tablesImage.setOnClickListener {
-            startActivity(TablesActivity.intent(this, restaurantData))
+            updateData()
         }
 
-        dishesImage.setOnClickListener {
-            startActivity(DishesActivity.intent(this, restaurantData))
+        // Inicializamos la vista para que cargue el fragmento por defecto (TablesFragment)
+        initView()
+
+        // Configuro el listener que gestionará las selecciones sobre el Navigation Menu
+        navigation_view.setOnNavigationItemSelectedListener { item ->
+            val selectedItem = item.itemId
+            val fragmentToShow = getFragmentToShow(selectedItem)
+            replaceFragment(fragmentToShow)
+
+            true
+        }
+    }
+
+    fun getFragmentToShow(itemId : Int) : Fragment {
+        return if (itemId == R.id.action_dishes) {
+            DishesFragment()
+        }
+        else {
+            TablesFragment()
+        }
+
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+    }
+
+    fun initView() {
+
+        // Recupero el fragmento actual
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        // si no hay ningun fragmento actual (estoy cargando la vista por primera vez), creo el fragmento que esté seteado por defecto (NAVIGATION_MENU_DEFAULT_OPTION)
+        if (currentFragment == null) {
+
+            navigation_view.selectedItemId = NAVIGATION_MENU_DEFAULT_OPTION
+            replaceFragment(DEFAULT_FRAGMENT)
         }
     }
 
@@ -65,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 restaurantData = downloadedData
 
                 // Actualizo el título de la Toolbar
-                supportActionBar?.title = "Foodr (${restaurantData.name})"
+                supportActionBar?.title = "Foodr (${restaurantData?.name})"
             }
             else {
                 // La descarga ha acabado con error
