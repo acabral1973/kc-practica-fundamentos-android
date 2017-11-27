@@ -47,12 +47,8 @@ class MainActivity : AppCompatActivity() {
 
         // Si no tengo datos los actualizo desde Internet
         if (restaurantData == null) {
-
             updateData()
         }
-
-        // Inicializamos la vista para que cargue el fragmento por defecto (TablesFragment)
-        initView()
 
         // Configuro el listener que gestionará las selecciones sobre el Navigation Menu
         navigation_view.setOnNavigationItemSelectedListener { item ->
@@ -69,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             DishesFragment()
         }
         else {
-            TablesFragment()
+            TablesFragment.newInstance(restaurantData)
         }
 
     }
@@ -111,6 +107,9 @@ class MainActivity : AppCompatActivity() {
 
                 // Actualizo el título de la Toolbar
                 supportActionBar?.title = "Foodr (${restaurantData?.name})"
+
+                // Inicializamos la vista para que cargue el fragmento por defecto (TablesFragment)
+                initView()
             }
             else {
                 // La descarga ha acabado con error

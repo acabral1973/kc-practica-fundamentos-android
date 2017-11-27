@@ -2,5 +2,5 @@
     <string name="app_name">Foodr</string>
     <string name="title_tables">Mesas</string>
     <string name="title_dishes">Carta</string>
-    <string name="downloading_data">Descargando datos</string>
+    <string name="downloading_data">DESCARGANDO DATOS</string>
 </resources>
