@@ -13,8 +13,11 @@ import es.smartech.foodr.models.Dish
 
 class DishesRecyclerViewAdapter(val dishes: List<Dish>) : RecyclerView.Adapter<DishesRecyclerViewAdapter.DishViewHolder>() {
 
+    var onClickListener : View.OnClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DishViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.cell_dishes, parent, false)
+        view.setOnClickListener(onClickListener)
         return DishViewHolder(view)
     }
 
