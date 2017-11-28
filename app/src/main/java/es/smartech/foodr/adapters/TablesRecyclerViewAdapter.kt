@@ -24,10 +24,14 @@ class TablesRecyclerViewAdapter(val numberOfTables: Int) : RecyclerView.Adapter<
 
     inner class TableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val cellTablesText = itemView.findViewById<TextView>(R.id.cellTablesText)
+        val idTable = itemView.findViewById<TextView>(R.id.table_id)
+        val statusTable = itemView.findViewById<TextView>(R.id.table_status)
+        val totalTable = itemView.findViewById<TextView>(R.id.table_total)
 
         fun bindTable(tableNumber: Int) {
-            cellTablesText.text = "Mesa ${tableNumber+1}"
+            idTable.text = "Mesa ${tableNumber+1}"
+            statusTable.text = "Estado de la mesa"
+            totalTable.text = "--- €"
         }
     }
 }

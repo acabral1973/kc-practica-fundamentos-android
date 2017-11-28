@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     val NAVIGATION_MENU_DEFAULT_OPTION = R.id.action_tables
-    val DEFAULT_FRAGMENT = getFragmentToShow(NAVIGATION_MENU_DEFAULT_OPTION)
 
     var restaurantData : Restaurant? = null
 
@@ -55,46 +54,15 @@ class MainActivity : AppCompatActivity() {
             val selectedItem = item.itemId
             val fragmentToShow = getFragmentToShow(selectedItem)
             replaceFragment(fragmentToShow)
-
             true
         }
     }
 
-    fun getFragmentToShow(itemId : Int) : Fragment {
-        return if (itemId == R.id.action_dishes) {
-            DishesFragment()
-        }
-        else {
-            TablesFragment.newInstance(restaurantData)
-        }
-
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit()
-    }
-
-    fun initView() {
-
-        // Recupero el fragmento actual
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-
-        // si no hay ningun fragmento actual (estoy cargando la vista por primera vez), creo el fragmento que esté seteado por defecto (NAVIGATION_MENU_DEFAULT_OPTION)
-        if (currentFragment == null) {
-
-            navigation_view.selectedItemId = NAVIGATION_MENU_DEFAULT_OPTION
-            replaceFragment(DEFAULT_FRAGMENT)
-        }
-    }
-
-
     private fun updateData() {
+
         view_switcher.displayedChild = VIEW_INDEX.DOWNLOADING.index
         async(UI) {
-            val data : Deferred<Restaurant?> = bg {
+            val data: Deferred<Restaurant?> = bg {
                 downloadData()
             }
 
@@ -102,20 +70,17 @@ class MainActivity : AppCompatActivity() {
 
             if (downloadedData != null) {
                 // La descarga se ha realizado correctamente
-                view_switcher.displayedChild = VIEW_INDEX.HOME_MENU.index
                 restaurantData = downloadedData
-
-                // Actualizo el título de la Toolbar
-                supportActionBar?.title = "Foodr (${restaurantData?.name})"
+                view_switcher.displayedChild = VIEW_INDEX.HOME_MENU.index
 
                 // Inicializamos la vista para que cargue el fragmento por defecto (TablesFragment)
                 initView()
-            }
-            else {
+
+            } else {
                 // La descarga ha acabado con error
                 AlertDialog.Builder(this@MainActivity)
                         .setTitle("Error")
-                        .setMessage("Error al descargar datos desde el servidor. Por favor verifica la conexión de tu teminal")
+                        .setMessage("Error al descargar datos desde el servidor. Por favor verifica la conexión a Internet")
                         .setPositiveButton("Reintentar", { dialog, _ ->
                             dialog.dismiss()
                             updateData()
@@ -126,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun downloadData(): Restaurant? {
+    private fun downloadData(): Restaurant? {
         try {
             // Retardo simulado
             Thread.sleep(3000)
@@ -191,6 +156,38 @@ class MainActivity : AppCompatActivity() {
         }
 
         return null
+    }
+
+    fun getFragmentToShow(itemId : Int) : Fragment {
+        return if (itemId == R.id.action_dishes) {
+            supportActionBar?.title = "${restaurantData?.name} (Carta)"
+            DishesFragment.newInstance(restaurantData)
+        }
+        else {
+            supportActionBar?.title = "${restaurantData?.name} (Mesas)"
+            TablesFragment.newInstance(restaurantData)
+        }
+
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+    }
+
+    private fun initView() {
+
+        // Recupero el fragmento actual
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        // si no hay ningun fragmento actual (estoy cargando la vista por primera vez), creo el fragmento que esté seteado por defecto (NAVIGATION_MENU_DEFAULT_OPTION)
+        if (currentFragment == null) {
+            val DEFAULT_FRAGMENT = getFragmentToShow(NAVIGATION_MENU_DEFAULT_OPTION)
+            navigation_view.selectedItemId = NAVIGATION_MENU_DEFAULT_OPTION
+            replaceFragment(DEFAULT_FRAGMENT)
+        }
     }
 
 

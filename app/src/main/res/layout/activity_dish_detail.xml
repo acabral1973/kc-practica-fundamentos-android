@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="es.smartech.foodr.activities.DishDetailActivity">
+
+    <ImageView
+        android:id="@+id/dish_image"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/image_not_available" />
+
+    <TextView
+        android:id="@+id/dish_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dish_image"
+        tools:text="Nombre del plato" />
+
+    <TextView
+        android:id="@+id/dish_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dish_name"
+        tools:text="Categoría del plato" />
+
+    <ImageView
+        android:id="@+id/crab_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/eggs_icon"
+        app:layout_constraintTop_toBottomOf="@+id/dish_category"
+        app:srcCompat="@drawable/icon_crab_green" />
+
+    <ImageView
+        android:id="@+id/eggs_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/gluten_icon"
+        app:layout_constraintTop_toBottomOf="@+id/dish_category"
+        app:srcCompat="@drawable/icon_eggs_green" />
+
+    <ImageView
+        android:id="@+id/gluten_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/dish_category"
+        app:layout_constraintStart_toStartOf="@+id/dish_category"
+        app:layout_constraintTop_toBottomOf="@+id/dish_category"
+        app:srcCompat="@drawable/icon_gluten_green" />
+
+    <ImageView
+        android:id="@+id/milk_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toEndOf="@+id/gluten_icon"
+        app:layout_constraintTop_toBottomOf="@+id/dish_category"
+        app:srcCompat="@drawable/icon_milk_green" />
+
+    <ImageView
+        android:id="@+id/nut_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toEndOf="@+id/milk_icon"
+        app:layout_constraintTop_toBottomOf="@+id/dish_category"
+        app:srcCompat="@drawable/icon_peanuts_green" />
+
+    <TextView
+        android:id="@+id/dish_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintTop_toBottomOf="@+id/gluten_icon"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Esta es la descripción del plato seleccionado, pa ver si te gusta o no" />
+
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/icon_add" />
+</android.support.constraint.ConstraintLayout>

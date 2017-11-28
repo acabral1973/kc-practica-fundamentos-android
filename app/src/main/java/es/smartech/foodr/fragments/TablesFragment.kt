@@ -7,14 +7,16 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import es.smartech.foodr.R
-import es.smartech.foodr.activities.TablesActivity
+
 import es.smartech.foodr.adapters.TablesRecyclerViewAdapter
 import es.smartech.foodr.models.Restaurant
-import kotlinx.android.synthetic.main.activity_tables.*
+
+import kotlinx.android.synthetic.main.fragment_tables.*
 
 class TablesFragment : Fragment() {
 
@@ -34,17 +36,27 @@ class TablesFragment : Fragment() {
     }
 
     lateinit var restaurant : Restaurant
+    lateinit var recyclerViewTables : RecyclerView
+    lateinit var fragmentView : View
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val fragmentView = inflater?.inflate(R.layout.fragment_tables, container, false)
 
-        restaurant = arguments.getSerializable(ARG_RESTAURANT) as Restaurant
-        val numberOfTables = restaurant.numberOfTables
+        if (inflater != null) {
+            fragmentView = inflater?.inflate(R.layout.fragment_tables, container, false)
+            recyclerViewTables = fragmentView.findViewById(R.id.recycler_view_tables)
+            restaurant = arguments.getSerializable(ARG_RESTAURANT) as Restaurant
 
-        // Configuro LayoutManager, ItemAnimator y Adapter para el RecyclerView
-        recyclerViewTables.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        recyclerViewTables.itemAnimator = DefaultItemAnimator()
-        recyclerViewTables.adapter = TablesRecyclerViewAdapter(numberOfTables)
+            if (restaurant != null) {
+
+                val restaurantName = restaurant.name
+                val numberOfTables = restaurant.numberOfTables
+
+                // Configuro LayoutManager, ItemAnimator y Adapter para el RecyclerView
+                recyclerViewTables.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                recyclerViewTables.itemAnimator = DefaultItemAnimator()
+                recyclerViewTables.adapter = TablesRecyclerViewAdapter(numberOfTables)
+            }
+        }
         return fragmentView
     }
 }
