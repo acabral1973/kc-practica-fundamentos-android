@@ -52,9 +52,8 @@ class DishesFragment : Fragment() {
                 val position = recyclerViewDishes.getChildAdapterPosition(view)
                 val dishToShow = dishes[position]
 
-                // lo que hago cuando pulsan sobre un plato
-                // Toast.makeText(activity, "Han seleccionado ${dish.name}", Toast.LENGTH_LONG).show()
-                startActivity(DishDetailActivity.intent(activity, dishToShow))
+                // cuando pulsan sobre un plato desde este fragment solo quiero mostrar los detalles del plato, por lo qu el botond e pdir estará desactivado
+                startActivity(DishDetailActivity.intent(activity, dishToShow, DishDetailActivity.Companion.ACTIVITY_MODE.TO_SHOW_DISH))
 
             }
             // Asigno LayoutManager, ItemAnimator y Adapter para el RecyclerView

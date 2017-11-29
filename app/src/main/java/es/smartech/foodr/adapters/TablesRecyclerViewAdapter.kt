@@ -6,16 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import es.smartech.foodr.R
+import es.smartech.foodr.models.Restaurant
+import es.smartech.foodr.models.Table
 
-class TablesRecyclerViewAdapter(val numberOfTables: Int) : RecyclerView.Adapter<TablesRecyclerViewAdapter.TableViewHolder>() {
+class TablesRecyclerViewAdapter(val restaurant: Restaurant) : RecyclerView.Adapter<TablesRecyclerViewAdapter.TableViewHolder>() {
+
+    var onClickListener : View.OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TableViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.cell_tables, parent, false)
+        view.setOnClickListener(onClickListener)
         return TableViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return numberOfTables
+        return restaurant.tables.size
     }
 
     override fun onBindViewHolder(holder: TableViewHolder?, position: Int) {
@@ -29,9 +34,10 @@ class TablesRecyclerViewAdapter(val numberOfTables: Int) : RecyclerView.Adapter<
         val totalTable = itemView.findViewById<TextView>(R.id.table_total)
 
         fun bindTable(tableNumber: Int) {
+
             idTable.text = "Mesa ${tableNumber+1}"
-            statusTable.text = "Estado de la mesa"
-            totalTable.text = "--- €"
+            statusTable.text = "Mesa ${restaurant.tables[tableNumber].getOcupationString()}"
+            totalTable.text = "${restaurant.tables[tableNumber].getPriceString()}"
         }
     }
 }

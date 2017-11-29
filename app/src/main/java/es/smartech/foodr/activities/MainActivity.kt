@@ -13,10 +13,7 @@ import es.smartech.foodr.CONSTANT_URL_DESCARGA
 import es.smartech.foodr.R
 import es.smartech.foodr.fragments.DishesFragment
 import es.smartech.foodr.fragments.TablesFragment
-import es.smartech.foodr.models.Allergen
-import es.smartech.foodr.models.Category
-import es.smartech.foodr.models.Dish
-import es.smartech.foodr.models.Restaurant
+import es.smartech.foodr.models.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
@@ -106,11 +103,15 @@ class MainActivity : AppCompatActivity() {
             val downloadedName = jsonRoot.getString("name")
             val downloadedTables = jsonRoot.getDouble("tables").toInt()
 
+            // creamos una lista de mesas
+            val tablesList = mutableListOf<Table>()
+            for (tableIndex in 0 until downloadedTables) {
+                tablesList.add(Table(tableIndex,false,0f,null))
+            }
+
             // Creamos una lista de platos
             val dishesList = mutableListOf<Dish>()
             for (dishIndex in 0 until downloadedDishesList.length()) {
-
-                Log.v("TAG", "Importando plato @{dishIndex}")
 
                 val dish = downloadedDishesList.getJSONObject(dishIndex)
                 val dishName = dish.getString("name")
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                 dishesList.add(Dish(dishName, dishDescription, dishprice, dishImage, dishAllergens, dishCategory))
             }
 
-            return Restaurant(downloadedName, downloadedTables, dishesList)
+            return Restaurant(downloadedName, downloadedTables, dishesList, tablesList)
 
         } catch (ex: Exception) {
             ex.printStackTrace()

@@ -12,6 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import es.smartech.foodr.R
+import es.smartech.foodr.activities.DishDetailActivity
+import es.smartech.foodr.activities.TableOrderActivity
+import es.smartech.foodr.adapters.DishesRecyclerViewAdapter
 
 import es.smartech.foodr.adapters.TablesRecyclerViewAdapter
 import es.smartech.foodr.models.Restaurant
@@ -45,17 +48,22 @@ class TablesFragment : Fragment() {
             fragmentView = inflater?.inflate(R.layout.fragment_tables, container, false)
             recyclerViewTables = fragmentView.findViewById(R.id.recycler_view_tables)
             restaurant = arguments.getSerializable(ARG_RESTAURANT) as Restaurant
+            val restaurantName = restaurant.name
 
-            if (restaurant != null) {
+            // construyo el Adapter para el RecyclerViw
+            val adapter = TablesRecyclerViewAdapter(restaurant)
+            adapter.onClickListener = View.OnClickListener { view ->
+                val tableNumber = recyclerViewTables.getChildAdapterPosition(view)
 
-                val restaurantName = restaurant.name
-                val numberOfTables = restaurant.numberOfTables
-
-                // Configuro LayoutManager, ItemAnimator y Adapter para el RecyclerView
-                recyclerViewTables.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                recyclerViewTables.itemAnimator = DefaultItemAnimator()
-                recyclerViewTables.adapter = TablesRecyclerViewAdapter(numberOfTables)
+                // cuando pulsan sobre un plato desde este fragment solo quiero mostrar los detalles del plato, por lo qu el botond e pdir estará desactivado
+                startActivity(TableOrderActivity.intent(activity, restaurant, tableNumber))
             }
+
+            // Configuro LayoutManager, ItemAnimator y Adapter para el RecyclerView
+            recyclerViewTables.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewTables.itemAnimator = DefaultItemAnimator()
+            recyclerViewTables.adapter = adapter
+
         }
         return fragmentView
     }
