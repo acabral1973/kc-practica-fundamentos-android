@@ -1,5 +1,6 @@
 package es.smartech.foodr.fragments
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,11 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import es.smartech.foodr.R
 import es.smartech.foodr.activities.DishDetailActivity
-import es.smartech.foodr.activities.TableOrderActivity
+import es.smartech.foodr.activities.OrderManagerActivity
 import es.smartech.foodr.adapters.DishesRecyclerViewAdapter
 
 import es.smartech.foodr.adapters.TablesRecyclerViewAdapter
 import es.smartech.foodr.models.Restaurant
+import es.smartech.foodr.models.Table
 
 import kotlinx.android.synthetic.main.fragment_tables.*
 
@@ -25,6 +27,7 @@ class TablesFragment : Fragment() {
 
     companion object {
 
+        val REQUEST_ORDER = 1
         val ARG_RESTAURANT = "ARG_RESTAURANT"
 
         fun newInstance(restaurant: Restaurant?): TablesFragment {
@@ -41,12 +44,13 @@ class TablesFragment : Fragment() {
     lateinit var restaurant : Restaurant
     lateinit var recyclerViewTables : RecyclerView
     lateinit var fragmentView : View
+    var onFragmentTableIsUpdatdListener : OnFragmentTableIsUpdatdListener? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         if (inflater != null) {
             fragmentView = inflater?.inflate(R.layout.fragment_tables, container, false)
-            recyclerViewTables = fragmentView.findViewById(R.id.recycler_view_tables)
+            recyclerViewTables = fragmentView.findViewById<RecyclerView>(R.id.recycler_view_tables)
             restaurant = arguments.getSerializable(ARG_RESTAURANT) as Restaurant
             val restaurantName = restaurant.name
 
@@ -56,7 +60,7 @@ class TablesFragment : Fragment() {
                 val tableNumber = recyclerViewTables.getChildAdapterPosition(view)
 
                 // cuando pulsan sobre un plato desde este fragment solo quiero mostrar los detalles del plato, por lo qu el botond e pdir estará desactivado
-                startActivity(TableOrderActivity.intent(activity, restaurant, tableNumber))
+                startActivityForResult(OrderManagerActivity.intent(activity, restaurant, tableNumber), REQUEST_ORDER)
             }
 
             // Configuro LayoutManager, ItemAnimator y Adapter para el RecyclerView
@@ -66,5 +70,44 @@ class TablesFragment : Fragment() {
 
         }
         return fragmentView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_ORDER) {
+            if (resultCode == Activity.RESULT_OK) {
+                restaurant = data?.getSerializableExtra(OrderManagerActivity.EXTRA_RESTAURANT) as Restaurant
+
+
+                //onFragmentAddDishListener?.dishIsAdded(dish)
+            }
+        }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        commonOnattach(context)
+    }
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        commonOnattach(activity)
+    }
+
+    fun commonOnattach(context: Context?) {
+        // Me quedo con la referencia de la actividad a la que me atacheo para poder avisarle "cosas"
+        if (context is OnFragmentTableIsUpdatdListener) {
+            onFragmentTableIsUpdatdListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onFragmentTableIsUpdatdListener = null
+    }
+
+    interface OnFragmentTableIsUpdatdListener{
+        fun tableIsUpdated(table : Table)
     }
 }

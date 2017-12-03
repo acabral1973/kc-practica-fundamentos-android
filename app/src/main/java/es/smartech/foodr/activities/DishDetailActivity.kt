@@ -1,5 +1,6 @@
 package es.smartech.foodr.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -13,18 +14,13 @@ class DishDetailActivity : AppCompatActivity() {
 
     companion object {
 
-        enum class ACTIVITY_MODE {
-            TO_SHOW_DISH,
-            TO_ORDER_DISH
-        }
-
-        private val EXTRA_DISH = "EXTRA_DISH"
+        val EXTRA_DISH = "EXTRA_DISH"
         private val EXTRA_ACTIVITY_MODE = "EXTRA_ACTIVITY_MODE"
 
-        fun intent(context: Context, dish: Dish, activityMode: ACTIVITY_MODE) : Intent {
+        fun intent(context: Context, dish: Dish, addMode: Boolean) : Intent {
             val intent = Intent(context, DishDetailActivity::class.java)
             intent.putExtra(EXTRA_DISH, dish)
-            intent.putExtra(EXTRA_ACTIVITY_MODE, activityMode)
+            intent.putExtra(EXTRA_ACTIVITY_MODE, addMode)
             return intent
         }
     }
@@ -33,9 +29,9 @@ class DishDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dish_detail)
 
         val dish = intent.getSerializableExtra(EXTRA_DISH) as Dish
-        val activityMode = intent.getSerializableExtra(EXTRA_ACTIVITY_MODE) as ACTIVITY_MODE
+        val addMode = intent.getBooleanExtra(EXTRA_ACTIVITY_MODE, false)
 
-        if  (activityMode == ACTIVITY_MODE.TO_ORDER_DISH) {
+        if  (addMode) {
             add_button.isEnabled = true
             add_button.visibility = View.VISIBLE
         } else {
@@ -43,11 +39,21 @@ class DishDetailActivity : AppCompatActivity() {
             add_button.visibility = View.INVISIBLE
         }
 
+        add_button.setOnClickListener { addDish(dish) }
+
         supportActionBar?.title = "${dish?.name} (Detalles)"
         dish_image.setImageResource(dish.image)
         dish_name.text = dish.name
         dish_category.text = "${(dish.category)}"
         dish_price.text = dish.getPriceSting()
         dish_description.text = dish.description
+    }
+
+    private fun addDish(dish: Dish) {
+        val returnIntent = Intent()
+        returnIntent.putExtra(EXTRA_DISH, dish)
+        setResult(Activity.RESULT_OK, returnIntent)
+        // Finalizamos esta actividad, regresando a la anterior
+        finish()
     }
 }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Foodr</string>
-    <string name="title_tables">Mesas</string>
+    <string name="title_tables">Pedidos</string>
     <string name="title_dishes">Carta</string>
     <string name="downloading_data">DESCARGANDO DATOS</string>
     <string name="euro_format">%.2f €%</string>
+    <string name="no_order">No hay pedido</string>
 </resources>

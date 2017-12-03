@@ -40,7 +40,8 @@ android:layout_margin="@dimen/default_margin">
             app:layout_constraintEnd_toStartOf="@+id/table_total"
             app:layout_constraintStart_toEndOf="@+id/table_id"
             app:layout_constraintTop_toTopOf="@+id/table_id"
-            tools:text="Esta mesa está libre" />
+            tools:text="Esta mesa está libre"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/table_total"
@@ -52,7 +53,7 @@ android:layout_margin="@dimen/default_margin">
             app:layout_constraintBottom_toBottomOf="@+id/table_status"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/table_status"
-            tools:text="25 €" />
+            tools:text="25 €"/>
 
     </android.support.constraint.ConstraintLayout>
 

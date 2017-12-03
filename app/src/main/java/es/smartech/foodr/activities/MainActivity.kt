@@ -1,14 +1,9 @@
 package es.smartech.foodr.activities
 
 import android.app.AlertDialog
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.internal.NavigationMenu
 import android.support.v4.app.Fragment
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import es.smartech.foodr.CONSTANT_URL_DESCARGA
 import es.smartech.foodr.R
 import es.smartech.foodr.fragments.DishesFragment
@@ -23,7 +18,7 @@ import org.json.JSONObject
 import java.net.URL
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TablesFragment.OnFragmentTableIsUpdatdListener {
 
     enum class VIEW_INDEX(val index: Int) {
         DOWNLOADING(0),
@@ -106,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             // creamos una lista de mesas
             val tablesList = mutableListOf<Table>()
             for (tableIndex in 0 until downloadedTables) {
-                tablesList.add(Table(tableIndex,false,0f,null))
+                tablesList.add(Table(tableIndex,false,0f, mutableListOf<Dish>()))
             }
 
             // Creamos una lista de platos
@@ -162,7 +157,7 @@ class MainActivity : AppCompatActivity() {
     fun getFragmentToShow(itemId : Int) : Fragment {
         return if (itemId == R.id.action_dishes) {
             supportActionBar?.title = "${restaurantData?.name} (Carta)"
-            DishesFragment.newInstance(restaurantData)
+            DishesFragment.newInstance(restaurantData, false)
         }
         else {
             supportActionBar?.title = "${restaurantData?.name} (Mesas)"
@@ -174,14 +169,14 @@ class MainActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.order_fragment_container, fragment)
                 .commit()
     }
 
     private fun initView() {
 
         // Recupero el fragmento actual
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.order_fragment_container)
 
         // si no hay ningun fragmento actual (estoy cargando la vista por primera vez), creo el fragmento que esté seteado por defecto (NAVIGATION_MENU_DEFAULT_OPTION)
         if (currentFragment == null) {
@@ -190,6 +185,11 @@ class MainActivity : AppCompatActivity() {
             replaceFragment(DEFAULT_FRAGMENT)
         }
     }
+
+    override fun tableIsUpdated(table: Table) {
+        
+    }
+
 
 
 }

@@ -1,5 +1,6 @@
 package es.smartech.foodr.adapters
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -33,11 +34,16 @@ class TablesRecyclerViewAdapter(val restaurant: Restaurant) : RecyclerView.Adapt
         val statusTable = itemView.findViewById<TextView>(R.id.table_status)
         val totalTable = itemView.findViewById<TextView>(R.id.table_total)
 
+        @SuppressLint("ResourceAsColor")
         fun bindTable(tableNumber: Int) {
 
             idTable.text = "Mesa ${tableNumber+1}"
-            statusTable.text = "Mesa ${restaurant.tables[tableNumber].getOcupationString()}"
+
             totalTable.text = "${restaurant.tables[tableNumber].getPriceString()}"
+
+            val statusTableTextColor = if (restaurant.tables[tableNumber].isOccupied()) {R.color.red} else {R.color.colorAccent}
+            statusTable.setTextColor(statusTableTextColor)
+            statusTable.text = "${restaurant.tables[tableNumber].getOcupationString()}"
         }
     }
 }

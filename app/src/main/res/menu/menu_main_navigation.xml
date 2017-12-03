@@ -2,8 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_tables"
-        android:title="@string/title_tables"/>
+        android:title="@string/title_tables"
+        android:icon="@drawable/order_white"
+        android:iconTint="@color/white" />
     <item
         android:id="@+id/action_dishes"
-        android:title="@string/title_dishes"/>
+        android:title="@string/title_dishes"
+        android:icon="@drawable/menu_white"
+        android:iconTint="@color/white" />
 </menu>
