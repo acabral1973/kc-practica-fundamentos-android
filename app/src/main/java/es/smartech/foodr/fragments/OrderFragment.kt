@@ -1,8 +1,8 @@
 package es.smartech.foodr.fragments
 
+import android.app.Fragment
 import android.os.Bundle
 import es.smartech.foodr.models.Restaurant
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -86,5 +86,6 @@ class OrderFragment : Fragment() {
         restaurant = updatedRestaurant
         val adapter = OrderRecyclerViewAdapter(restaurant.tables[tableNumber].order)
         recyclerViewOrder.adapter = adapter
+        viewSwitch.displayedChild = VIEW_INDEX.ORDER.index
     }
 }

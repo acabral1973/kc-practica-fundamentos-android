@@ -1,9 +1,9 @@
 package es.smartech.foodr.activities
 
 import android.app.AlertDialog
+import android.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import es.smartech.foodr.CONSTANT_URL_DESCARGA
 import es.smartech.foodr.R
 import es.smartech.foodr.fragments.DishesFragment
@@ -167,10 +167,7 @@ class MainActivity : AppCompatActivity(), TablesFragment.OnFragmentTableIsUpdatd
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.order_fragment_container, fragment)
-                .commit()
+        fragmentManager.beginTransaction().replace(R.id.order_fragment_container, fragment).commit()
     }
 
     private fun initView() {
@@ -186,8 +183,9 @@ class MainActivity : AppCompatActivity(), TablesFragment.OnFragmentTableIsUpdatd
         }
     }
 
-    override fun tableIsUpdated(table: Table) {
-        
+    override fun tableIsUpdated(restaurant: Restaurant) {
+
+        restaurantData = restaurant
     }
 
 

@@ -22,6 +22,7 @@ class OrderManagerActivity : AppCompatActivity() {
 
     companion object {
         val REQUEST_ADD_DISH = 1
+        val REQUEST_CLOSE_TABLE = 2
         val EXTRA_RESTAURANT = "EXTRA_RESTAURANT"
         val EXTRA_TABLE_NUMBER = "EXTRA_TABLE_NUMBER"
 
@@ -46,18 +47,15 @@ class OrderManagerActivity : AppCompatActivity() {
 
         // cargo el fragmento con la orden de la mesa seleccionada
         if (fragmentManager.findFragmentById(R.id.order_fragment_container) == null) {
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.order_fragment_container, OrderFragment.newInstance(restaurant, tableNumber))
-                    .commit()
-         }
+            fragmentManager.beginTransaction().replace(R.id.order_fragment_container, OrderFragment.newInstance(restaurant, tableNumber)).commit()
+    }
 
         //configuro el OnClickListnr del botón de agregar platos para que lance la actividad de agregar platos
         add_button.setOnClickListener {
             startActivityForResult(AddDishActivity.intent(this, restaurant), REQUEST_ADD_DISH)
         }
 
-        //configuro el OnClickListnr del botón de agregar platos para que lance la actividad de agregar platos
+        //configuro el OnClickListnr del botón lanzar el pedido
         order_button.setOnClickListener {
             // cuando cierro pedido de mesa devuelvo el pedido a la actividad principal
             val returnIntent = Intent()
@@ -69,7 +67,7 @@ class OrderManagerActivity : AppCompatActivity() {
 
         //configuro el OnClickListnr del botón de cerrar cuenta de la mesa seleccionada
         close_button.setOnClickListener {
-
+            startActivityForResult(CloseTableActivity.intent(this, restaurant, tableNumber), REQUEST_CLOSE_TABLE)
         }
 
     }
@@ -80,12 +78,26 @@ class OrderManagerActivity : AppCompatActivity() {
         if (requestCode == REQUEST_ADD_DISH) {
             if (resultCode == Activity.RESULT_OK) {
                 val dish = data?.getSerializableExtra(AddDishActivity.EXTRA_DISH_ADDED) as Dish
-                Toast.makeText(this, "Han agregau un ${dish.name}", Toast.LENGTH_LONG).show()
                 restaurant.tables[tableNumber].addDishToOrder(dish)
                 val orderFragment = fragmentManager.findFragmentById(R.id.order_fragment_container) as? OrderFragment
                 orderFragment?.updateOrder(restaurant)
             }
         }
+
+        if (requestCode == REQUEST_CLOSE_TABLE) {
+            if (resultCode == Activity.RESULT_OK) {
+                restaurant = data?.getSerializableExtra(CloseTableActivity.EXTRA_RESTAURANT) as Restaurant
+
+                // devuelvo el restaurante con la mesa liberada
+                val returnIntent = Intent()
+                returnIntent.putExtra(OrderManagerActivity.EXTRA_RESTAURANT, restaurant)
+                setResult(Activity.RESULT_OK, returnIntent)
+                // Finalizamos esta actividad, regresando a la anterior
+                finish()
+            }
+        }
+
+
     }
 
 }

@@ -1,10 +1,10 @@
 package es.smartech.foodr.fragments
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -16,6 +16,7 @@ import es.smartech.foodr.R
 import es.smartech.foodr.activities.DishDetailActivity
 import es.smartech.foodr.activities.OrderManagerActivity
 import es.smartech.foodr.adapters.DishesRecyclerViewAdapter
+import es.smartech.foodr.adapters.OrderRecyclerViewAdapter
 
 import es.smartech.foodr.adapters.TablesRecyclerViewAdapter
 import es.smartech.foodr.models.Restaurant
@@ -59,7 +60,6 @@ class TablesFragment : Fragment() {
             adapter.onClickListener = View.OnClickListener { view ->
                 val tableNumber = recyclerViewTables.getChildAdapterPosition(view)
 
-                // cuando pulsan sobre un plato desde este fragment solo quiero mostrar los detalles del plato, por lo qu el botond e pdir estará desactivado
                 startActivityForResult(OrderManagerActivity.intent(activity, restaurant, tableNumber), REQUEST_ORDER)
             }
 
@@ -78,9 +78,14 @@ class TablesFragment : Fragment() {
         if (requestCode == REQUEST_ORDER) {
             if (resultCode == Activity.RESULT_OK) {
                 restaurant = data?.getSerializableExtra(OrderManagerActivity.EXTRA_RESTAURANT) as Restaurant
+                val adapter = TablesRecyclerViewAdapter(restaurant)
+                adapter.onClickListener = View.OnClickListener { view ->
+                    val tableNumber = recyclerViewTables.getChildAdapterPosition(view)
 
-
-                //onFragmentAddDishListener?.dishIsAdded(dish)
+                    startActivityForResult(OrderManagerActivity.intent(activity, restaurant, tableNumber), REQUEST_ORDER)
+                }
+                recyclerViewTables.adapter = adapter
+                onFragmentTableIsUpdatdListener?.tableIsUpdated(restaurant)
             }
         }
     }
@@ -108,6 +113,6 @@ class TablesFragment : Fragment() {
     }
 
     interface OnFragmentTableIsUpdatdListener{
-        fun tableIsUpdated(table : Table)
+        fun tableIsUpdated(restaurant: Restaurant)
     }
 }

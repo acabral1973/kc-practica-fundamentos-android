@@ -50,9 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="Contiene marisco"
         app:layout_constraintEnd_toStartOf="@+id/eggs_icon"
         app:layout_constraintTop_toBottomOf="@+id/dish_category"
-        app:srcCompat="@drawable/icon_crab_green" />
+        app:srcCompat="@drawable/icon_crab_gray" />
 
     <ImageView
         android:id="@+id/eggs_icon"
@@ -60,9 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="Contiene huevo"
         app:layout_constraintEnd_toStartOf="@+id/gluten_icon"
         app:layout_constraintTop_toBottomOf="@+id/dish_category"
-        app:srcCompat="@drawable/icon_eggs_green" />
+        app:srcCompat="@drawable/icon_eggs_gray" />
 
     <ImageView
         android:id="@+id/gluten_icon"
@@ -71,10 +73,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="Contiene gluten"
         app:layout_constraintEnd_toEndOf="@+id/dish_category"
         app:layout_constraintStart_toStartOf="@+id/dish_category"
         app:layout_constraintTop_toBottomOf="@+id/dish_category"
-        app:srcCompat="@drawable/icon_gluten_green" />
+        app:srcCompat="@drawable/icon_gluten_gray" />
 
     <ImageView
         android:id="@+id/milk_icon"
@@ -82,9 +85,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="Contiene lactosa"
         app:layout_constraintStart_toEndOf="@+id/gluten_icon"
         app:layout_constraintTop_toBottomOf="@+id/dish_category"
-        app:srcCompat="@drawable/icon_milk_green" />
+        app:srcCompat="@drawable/icon_milk_gray" />
 
     <ImageView
         android:id="@+id/nut_icon"
@@ -92,9 +96,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="Contiene frutos secos"
         app:layout_constraintStart_toEndOf="@+id/milk_icon"
         app:layout_constraintTop_toBottomOf="@+id/dish_category"
-        app:srcCompat="@drawable/icon_peanuts_green" />
+        app:srcCompat="@drawable/icon_peanuts_gray" />
 
     <TextView
         android:id="@+id/dish_description"
@@ -118,25 +123,24 @@
         android:layout_height="50dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:background="@color/white"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/icon_add" />
 
     <TextView
         android:id="@+id/dish_price"
-        android:layout_width="wrap_content"
+        android:layout_width="119dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/add_button"
-        app:layout_constraintEnd_toEndOf="@+id/add_button"
-        app:layout_constraintStart_toStartOf="@+id/add_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Precio: 15 €" />
 
     <android.support.constraint.Guideline

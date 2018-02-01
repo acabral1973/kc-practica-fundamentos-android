@@ -25,7 +25,8 @@
         <activity android:name=".activities.DishDetailActivity" />
         <activity android:name=".activities.TableOrderActivity" />
         <activity android:name=".activities.OrderManagerActivity" />
-        <activity android:name=".activities.AddDishActivity"></activity>
+        <activity android:name=".activities.AddDishActivity" />
+        <activity android:name=".activities.CloseTableActivity"></activity>
     </application>
 
 </manifest>

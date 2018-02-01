@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils.replace
 import es.smartech.foodr.R
 import es.smartech.foodr.fragments.DishesFragment
 import es.smartech.foodr.models.Dish
@@ -33,9 +34,9 @@ class AddDishActivity : AppCompatActivity(), DishesFragment.OnFragmentAddDishLis
 
         // cargo el fragmento de listado de platos en modo add
         if (fragmentManager.findFragmentById(R.id.order_fragment_container) == null) {
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.order_fragment_container, DishesFragment.newInstance(restaurant, true))
+            fragmentManager.
+                    beginTransaction().
+                    replace(R.id.order_fragment_container, DishesFragment.newInstance(restaurant, true))
                     .commit()
         }
 

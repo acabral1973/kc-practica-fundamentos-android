@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import es.smartech.foodr.R
+import es.smartech.foodr.activities.DishDetailActivity.Companion.EXTRA_DISH
+import es.smartech.foodr.models.Allergen
 import es.smartech.foodr.models.Dish
 import kotlinx.android.synthetic.main.activity_dish_detail.*
 
@@ -47,6 +49,16 @@ class DishDetailActivity : AppCompatActivity() {
         dish_category.text = "${(dish.category)}"
         dish_price.text = dish.getPriceSting()
         dish_description.text = dish.description
+
+        dish.allergens.forEach {
+            when (it) {
+                Allergen.EGG -> eggs_icon.setImageResource(R.drawable.icon_eggs_green)
+                Allergen.NUTS -> nut_icon.setImageResource(R.drawable.icon_peanuts_green)
+                Allergen.GLUTEN -> gluten_icon.setImageResource(R.drawable.icon_gluten_green)
+                Allergen.LACTOSE -> milk_icon.setImageResource(R.drawable.icon_milk_green)
+                Allergen.SHELLFISH -> crab_icon.setImageResource(R.drawable.icon_crab_green)
+            }
+        }
     }
 
     private fun addDish(dish: Dish) {
