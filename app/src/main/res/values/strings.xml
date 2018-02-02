@@ -4,5 +4,5 @@
     <string name="title_dishes">Carta</string>
     <string name="downloading_data">DESCARGANDO DATOS</string>
     <string name="euro_format">%.2f €%</string>
-    <string name="no_order">No hay pedido</string>
+    <string name="no_order">Aún no se han agregado platos</string>
 </resources>

@@ -17,6 +17,7 @@ class AddDishActivity : AppCompatActivity(), DishesFragment.OnFragmentAddDishLis
 
         private val EXTRA_RESTAURANT = "EXTRA_RESTAURANT"
         val EXTRA_DISH_ADDED = "EXTRA_DISH_ADDED"
+        val EXTRA_NOTES_ADDED = "EXTRA_NOTES_ADDED"
 
         fun intent(context: Context, restaurant: Restaurant) : Intent {
             val intent = Intent(context, AddDishActivity::class.java)
@@ -42,10 +43,11 @@ class AddDishActivity : AppCompatActivity(), DishesFragment.OnFragmentAddDishLis
 
     }
 
-    override fun dishIsAdded(dish: Dish) {
+    override fun dishIsAdded(dish: Dish, customerNotes: String) {
         // cuando DishesFragment me devuelve un plato que se ha agregado, lo paso al OrderManagerActivity
         val returnIntent = Intent()
         returnIntent.putExtra(EXTRA_DISH_ADDED, dish)
+        returnIntent.putExtra(EXTRA_NOTES_ADDED, customerNotes)
         setResult(Activity.RESULT_OK, returnIntent)
         // Finalizamos esta actividad, regresando a la anterior
         finish()

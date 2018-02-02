@@ -8,8 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import es.smartech.foodr.R
 import es.smartech.foodr.models.Dish
+import es.smartech.foodr.models.OrderItem
 
-class OrderRecyclerViewAdapter(val order: List<Dish>?) : RecyclerView.Adapter<OrderRecyclerViewAdapter.DishViewHolder>() {
+class OrderRecyclerViewAdapter(val order: List<OrderItem>?) : RecyclerView.Adapter<OrderRecyclerViewAdapter.DishViewHolder>() {
 
     var onClickListener : View.OnClickListener? = null
 
@@ -30,7 +31,7 @@ class OrderRecyclerViewAdapter(val order: List<Dish>?) : RecyclerView.Adapter<Or
     override fun onBindViewHolder(holder: DishViewHolder?, position: Int) {
 
         if (order != null) {
-            val dish = order[position]
+            val dish = order[position].dish
             val dishName = dish.name
             val dishCategory = dish.category.toString()
             val dishImage = dish.image

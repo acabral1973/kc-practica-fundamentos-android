@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), TablesFragment.OnFragmentTableIsUpdatd
             // creamos una lista de mesas
             val tablesList = mutableListOf<Table>()
             for (tableIndex in 0 until downloadedTables) {
-                tablesList.add(Table(tableIndex,false,0f, mutableListOf<Dish>()))
+                tablesList.add(Table(tableIndex,false,0f, mutableListOf<OrderItem>()))
             }
 
             // Creamos una lista de platos

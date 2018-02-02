@@ -6,7 +6,8 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 app:cardElevation="@dimen/card_elevation"
 app:cardCornerRadius="@dimen/card_corner_radius"
-android:layout_margin="@dimen/default_margin">
+android:layout_margin="@dimen/extra_small_margin"
+android:alpha="0.8">
 
     <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,18 +31,15 @@ android:layout_margin="@dimen/default_margin">
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/default_margin"
             android:layout_toEndOf="@+id/table_id"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/table_id"
             app:layout_constraintEnd_toStartOf="@+id/table_total"
             app:layout_constraintStart_toEndOf="@+id/table_id"
             app:layout_constraintTop_toTopOf="@+id/table_id"
-            tools:text="Esta mesa está libre"
-            android:textColor="@color/colorPrimary"/>
+            tools:text="Libre" />
 
         <TextView
             android:id="@+id/table_total"

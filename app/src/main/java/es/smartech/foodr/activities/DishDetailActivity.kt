@@ -17,6 +17,8 @@ class DishDetailActivity : AppCompatActivity() {
     companion object {
 
         val EXTRA_DISH = "EXTRA_DISH"
+        val EXTRA_NOTES = "EXTRA_NOTES"
+
         private val EXTRA_ACTIVITY_MODE = "EXTRA_ACTIVITY_MODE"
 
         fun intent(context: Context, dish: Dish, addMode: Boolean) : Intent {
@@ -32,16 +34,6 @@ class DishDetailActivity : AppCompatActivity() {
 
         val dish = intent.getSerializableExtra(EXTRA_DISH) as Dish
         val addMode = intent.getBooleanExtra(EXTRA_ACTIVITY_MODE, false)
-
-        if  (addMode) {
-            add_button.isEnabled = true
-            add_button.visibility = View.VISIBLE
-        } else {
-            add_button.isEnabled = false
-            add_button.visibility = View.INVISIBLE
-        }
-
-        add_button.setOnClickListener { addDish(dish) }
 
         supportActionBar?.title = "${dish?.name} (Detalles)"
         dish_image.setImageResource(dish.image)
@@ -59,11 +51,31 @@ class DishDetailActivity : AppCompatActivity() {
                 Allergen.SHELLFISH -> crab_icon.setImageResource(R.drawable.icon_crab_green)
             }
         }
+
+        if  (addMode) {
+            add_button.isEnabled = true
+            add_button.visibility = View.VISIBLE
+            notas_edit_text.isEnabled = true
+            notas_edit_text.visibility = View.VISIBLE
+            label_notas_cliente.isEnabled = true
+            label_notas_cliente.visibility = View.VISIBLE
+
+            add_button.setOnClickListener { addDish(dish, notas_edit_text.text.toString()) }
+
+        } else {
+            add_button.isEnabled = false
+            add_button.visibility = View.INVISIBLE
+            notas_edit_text.isEnabled = false
+            notas_edit_text.visibility = View.INVISIBLE
+            label_notas_cliente.isEnabled = false
+            label_notas_cliente.visibility = View.INVISIBLE
+        }
     }
 
-    private fun addDish(dish: Dish) {
+    private fun addDish(dish: Dish, customerNotes: String) {
         val returnIntent = Intent()
         returnIntent.putExtra(EXTRA_DISH, dish)
+        returnIntent.putExtra(EXTRA_NOTES, customerNotes)
         setResult(Activity.RESULT_OK, returnIntent)
         // Finalizamos esta actividad, regresando a la anterior
         finish()

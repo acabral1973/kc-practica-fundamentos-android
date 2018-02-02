@@ -75,7 +75,8 @@ class DishesFragment : Fragment() {
         if (requestCode == REQUEST_ADD_DISH) {
             if (resultCode == Activity.RESULT_OK) {
                 val dish = data?.getSerializableExtra(DishDetailActivity.EXTRA_DISH) as Dish
-                onFragmentAddDishListener?.dishIsAdded(dish)
+                val customerNotes = data.getStringExtra(DishDetailActivity.EXTRA_NOTES)
+                onFragmentAddDishListener?.dishIsAdded(dish, customerNotes)
             }
         }
     }
@@ -103,6 +104,6 @@ class DishesFragment : Fragment() {
     }
 
     interface OnFragmentAddDishListener{
-        fun dishIsAdded(dish: Dish)
+        fun dishIsAdded(dish: Dish, customerNotes: String)
     }
 }

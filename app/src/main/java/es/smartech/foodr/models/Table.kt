@@ -2,7 +2,7 @@ package es.smartech.foodr.models
 
 import java.io.Serializable
 
-data class Table (var number: Int, var occupied: Boolean, var price: Float, var order: MutableList<Dish> = mutableListOf<Dish>()) : Serializable {
+data class Table (var number: Int, var occupied: Boolean, var price: Float, var order: MutableList<OrderItem> = mutableListOf<OrderItem>()) : Serializable {
 
     fun getPriceString() = "Importe: ${price} €"
 
@@ -20,8 +20,9 @@ data class Table (var number: Int, var occupied: Boolean, var price: Float, var 
 
     fun isOccupied() = occupied
 
-    fun addDishToOrder(dish: Dish) {
-        order.add(dish)
+    fun addDishToOrder(dish: Dish, customerNotes: String) {
+        val newDishToOrder = OrderItem(dish, customerNotes)
+        order.add(newDishToOrder)
         price = price + dish.price
         setTableOccupied()
     }

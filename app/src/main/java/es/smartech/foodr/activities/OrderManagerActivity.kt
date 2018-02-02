@@ -78,7 +78,8 @@ class OrderManagerActivity : AppCompatActivity() {
         if (requestCode == REQUEST_ADD_DISH) {
             if (resultCode == Activity.RESULT_OK) {
                 val dish = data?.getSerializableExtra(AddDishActivity.EXTRA_DISH_ADDED) as Dish
-                restaurant.tables[tableNumber].addDishToOrder(dish)
+                val customerNotes = data?.getStringExtra(AddDishActivity.EXTRA_NOTES_ADDED)
+                restaurant.tables[tableNumber].addDishToOrder(dish, customerNotes)
                 val orderFragment = fragmentManager.findFragmentById(R.id.order_fragment_container) as? OrderFragment
                 orderFragment?.updateOrder(restaurant)
             }
