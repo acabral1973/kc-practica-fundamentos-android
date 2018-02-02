@@ -1,11 +1,15 @@
 package es.smartech.foodr.fragments
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 import es.smartech.foodr.models.Restaurant
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,10 +71,15 @@ class OrderFragment : Fragment() {
             // construyo el Adapter para el RecyclerViw
             val adapter = OrderRecyclerViewAdapter(order)
             adapter.onClickListener = View.OnClickListener { view ->
-                val tableNumber = recyclerViewOrder.getChildAdapterPosition(view)
-
-                // cuando pulsan sobre un plato de la orden sto es lo que haré
-
+                val orderPosition = recyclerViewOrder.getChildAdapterPosition(view)
+                Log.d("OrderFragment", "Configurando el listener")
+                // esto es lo que haré cuando pulsan sobre un plato de la orden
+                AlertDialog.Builder(activity)
+                        .setTitle("Notas del cliente")
+                        .setMessage(order[orderPosition].customerNotes)
+                        .setPositiveButton("Aceptar", {dialog, _ ->
+                            dialog.dismiss()
+                        }).show()
             }
 
             // Configuro LayoutManager, ItemAnimator y Adapter para el RecyclerView
@@ -81,6 +90,7 @@ class OrderFragment : Fragment() {
         }
         return fragmentView
     }
+
 
     fun updateOrder (updatedRestaurant: Restaurant) {
         restaurant = updatedRestaurant
