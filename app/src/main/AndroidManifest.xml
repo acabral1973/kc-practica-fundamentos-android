@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/foodr_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -20,10 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TablesActivity" />
-        <activity android:name=".activities.DishesActivity" />
         <activity android:name=".activities.DishDetailActivity" />
-        <activity android:name=".activities.TableOrderActivity" />
         <activity android:name=".activities.OrderManagerActivity" />
         <activity android:name=".activities.AddDishActivity" />
         <activity android:name=".activities.CloseTableActivity"></activity>
